@@ -8,19 +8,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A user must have a username.'],
     unique: true,
-    validator: function (value) {
-      return validator.isAlpha(value, 'en-US', { ignore: ' ' }); // allows spaces, if you want to allow spaces
+    validate: {
+      validator: function (value) {
+        return validator.isAlpha(value, 'en-US', { ignore: ' ' }); // allows spaces, if you want to allow spaces
+      },
+      message: 'Username can only contain letters and spaces'
     },
   },
   password: {
     type: String,
     required: [true, 'A user must have a password.'],
-    minLength: 8,
+    minLength: [8, 'Password must be at least 8 characters long'],
     select: false,
     validate: {
       validator: function (password) {
-        return validator.isAlphanumeric(password, 'en-US');
+        // Allow letters, numbers, and common special characters
+        return /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]+$/.test(password);
       },
+      message: 'Password can contain letters, numbers, and special characters'
     },
   },
   highscore: {
