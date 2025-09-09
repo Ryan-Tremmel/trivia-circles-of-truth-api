@@ -33,4 +33,35 @@ app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 // Mounts router
 app.use('/trivia/api/users', userRouter);
 
+// Global error handling middleware (must be after all routes)
+app.use((err, req, res, next) => {
+  console.log('Global error handler:', err);
+  
+  // Handle Mongoose validation errors
+  if (err.name === 'ValidationError') {
+    const errors = Object.values(err.errors).map(el => el.message);
+    const message = errors.join('. ');
+    return res.status(400).json({
+      status: 'fail',
+      message: message
+    });
+  }
+  
+  // Handle Mongoose duplicate key errors
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue)[0];
+    const message = `${field} already exists`;
+    return res.status(400).json({
+      status: 'fail',
+      message: message
+    });
+  }
+  
+  // Handle other errors
+  res.status(err.statusCode || 500).json({
+    status: 'error',
+    message: err.message || 'Something went wrong!'
+  });
+});
+
 module.exports = app;
