@@ -9,7 +9,8 @@ app.use(
   cors({
     origin: [
       'https://trivia-circles-of-truth.onrender.com',
-      'https://trivia-circles-of-truth-develop.onrender.com'
+      'https://trivia-circles-of-truth-develop.onrender.com',
+      'http://localhost:3000'
     ], // Allow both production and development origins
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
