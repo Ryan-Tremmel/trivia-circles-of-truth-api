@@ -7,7 +7,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'https://trivia-circles-of-truth.onrender.com', // Allow only this origin
+    origin: [
+      'https://trivia-circles-of-truth.onrender.com',
+      'https://trivia-circles-of-truth-develop.onrender.com'
+    ], // Allow both production and development origins
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
   })
