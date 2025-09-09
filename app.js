@@ -50,7 +50,8 @@ app.use((err, req, res, next) => {
   // Handle Mongoose duplicate key errors
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
-    const message = `${field} already exists`;
+    const capitalizedField = field[0].toUpperCase() + field.slice(1);
+    const message = `${capitalizedField} already exists.`;
     return res.status(400).json({
       status: 'fail',
       message: message
